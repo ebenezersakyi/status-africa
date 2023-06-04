@@ -170,3 +170,59 @@
     font-family: Arial, Helvetica, sans-serif;
 
 }
+
+@media screen and (max-width: 800px) {
+    
+    .hero__text{
+        text-align: center;
+        font-size: 60px;
+        font-weight: bold;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 5px rgb(143, 143, 143);
+    }
+
+    .search__div{
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+        min-height: 55px;
+        border: 1px solid rgb(156, 156, 156);
+        border-radius:60px;
+        overflow: hidden;
+        margin: 39px 0px 0px 0px;
+    }
+
+    .search__div__active{
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+        min-height: 55px;
+        border-radius:30px;
+        overflow: hidden;
+        margin: 39px 0px 0px 0px;
+        background-color: #46484f;
+        box-shadow: 2px 2px 5px black;
+        border: 1px solid #46484f;
+    }
+    .trending__title{
+        text-align: left;
+        width: 90vw;
+        color: white;
+        font-size: larger;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 25px 0px 10px 0px;
+        font-weight: bold;
+    }
+
+    .business__item__div{
+        display: flex;
+        /* margin-top: 15px; */
+        border-bottom: 1px solid #474747;
+        width: 90vw;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+}

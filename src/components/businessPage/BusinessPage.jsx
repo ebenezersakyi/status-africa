@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./BusinessPage.css";
 
+import { Map, GoogleApiWrapper } from "google-maps-react";
+
 import axios from "axios";
 
-const Profile = () => {
+const Profile = ({ google }) => {
   const [showDilogue, setShowDilogue] = useState(true);
   const [inputValue, setInputValue] = useState("");
+  const [searchResults, setSetSearchResults] = useState([]);
+  const [searchingResults, setSetSearchingResults] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -23,6 +27,8 @@ const Profile = () => {
     };
     if (inputValue.length > 3) {
       debounceApiCall();
+    } else {
+      setSetSearchResults([]);
     }
     return () => {
       clearTimeout(timerId);
@@ -30,19 +36,82 @@ const Profile = () => {
   }, [inputValue]);
 
   const fetchBusinessInfo = async () => {
-    const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+    setSetSearchingResults(true);
+    //   const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
-    const placeId = "ChIJTXfPCEOb3w8R7oPKyy17Izg";
-    const url = `/api/maps/api/place/details/json?place_id=${placeId}&key=${API_KEY}`;
+    //   const placeId = "ChIJTXfPCEOb3w8R7oPKyy17Izg";
+    //   const url = `/api/maps/api/place/textsearch/json
+    // ?query=restaurants
+    // &key=AIzaSyBDHO8OgGVn4_ap5bsz7BRpWk-YpkZUK44`;
 
-    axios
-      .get(url)
-      .then((response) => {
-        console.log(JSON.stringify(response));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    //   axios
+    //     .get(url)
+    //     .then((response) => {
+    //       console.log(response);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+
+    // let map = new google.maps.Map(document.getElementById("map"));
+
+    // var request = {
+    //   query: "Museum of Contemporary Art Australia",
+    //   fields: ["name", "geometry"],
+    // };
+
+    // var service = new google.maps.places.PlacesService(map);
+
+    // service.findPlaceFromQuery(request, function (results, status) {
+    //   if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //     // for (var i = 0; i < results.length; i++) {
+    //     //   createMarker(results[i]);
+    //     // }
+    //     // map.setCenter(results[0].geometry.location);
+    //     console.log(results);
+    //   }
+    // });
+
+    // try {
+    //   const response = await axios.get(
+    //     `/api/maps/api/place/details/json?placeid=ChIJTXfPCEOb3w8R7oPKyy17Izg&key=AIzaSyBDHO8OgGVn4_ap5bsz7BRpWk-YpkZUK44`
+    //   );
+
+    //   if (response.status === 200 && response.data.status === "OK") {
+    //     // setPlace(response.data.result);
+    //     console.error("success");
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching place details:", error);
+    // }
+
+    const service = new google.maps.places.PlacesService(
+      document.createElement("div")
+    );
+    const request = {
+      query: inputValue,
+      // fields: ["name", "formatted_phone_number"],
+    };
+
+    service.textSearch(request, (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        // Assuming the first result is the desired place
+        if (results && results.length > 0) {
+          // const place = results[0];
+          // setPlaceDetails({
+          //   name: place.name,
+          //   phoneNumber: place.formatted_phone_number,
+          //   openingHours: place.opening_hours,
+          // });
+          console.log(results);
+          setSetSearchResults(results);
+        } else {
+          setSetSearchingResults(false);
+        }
+      } else {
+        setSetSearchingResults(false);
+      }
+    });
   };
 
   const inputChange = async (e) => {
@@ -76,18 +145,18 @@ const Profile = () => {
               onChange={inputChange}
             />
           </div>
-          {inputValue.length > 0 ? (
+          {searchResults.length > 0 ? (
             <div className="results__container">
-              {trendinBusinesss.map((item, index) => (
-                <div className="business__item__div">
+              {searchResults.map((item, index) => (
+                <div key={index} className="business__item__div">
                   <img
                     className="business__item__img"
-                    src={item.image}
+                    src={item.icon}
                     alt="business image"
                   />
                   <div className="details">
                     <span className="buss__name">{item.name}</span>
-                    <span className="buss__loc">{item.loction}</span>
+                    <span className="buss__loc">{item.formatted_address}</span>
                   </div>
                 </div>
               ))}
@@ -170,4 +239,6 @@ const trendinBusinesss = [
   },
 ];
 
-export default Profile;
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyBDHO8OgGVn4_ap5bsz7BRpWk-YpkZUK44",
+})(Profile);
