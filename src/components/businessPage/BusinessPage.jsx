@@ -11,6 +11,8 @@ const Profile = ({ google }) => {
   const [searchResults, setSetSearchResults] = useState([]);
   const [searchingResults, setSetSearchingResults] = useState(false);
 
+  const [selectedBusiness, setSelectedBusiness] = useState({});
+
   useEffect(() => {}, []);
 
   useEffect(() => {
