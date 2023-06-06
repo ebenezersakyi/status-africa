@@ -20,7 +20,10 @@ const Profile = () => {
   const [internationalPhone, setInternationalPhone] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
-  const [markerCoordinates, setMarkerCoordinates] = useState(null);
+  const [markerCoordinates, setMarkerCoordinates] = useState({
+    lat: -3.745,
+    lng: -38.523,
+  });
 
   const [businessDetails, setBusinessDetails] = useState(null);
 
@@ -175,10 +178,7 @@ const Profile = () => {
                   })
                 }
                 draggable={true}
-                position={{
-                  lat: -3.745,
-                  lng: -38.523,
-                }}
+                position={markerCoordinates}
               />
             </GoogleMap>
           ) : (
