@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import "./BusinessPage.css";
+import "./ProfileSetup.css";
 
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
@@ -13,7 +13,7 @@ const center = {
   lng: -38.523,
 };
 
-const Profile = () => {
+const ProfileSetup = () => {
   const [showDilogue, setShowDilogue] = useState(false);
   const [nameValue, setNameValue] = useState("");
   const [cityAndCountry, setCityAndCountry] = useState("");
@@ -269,7 +269,7 @@ const trendinBusinesss = [
   },
 ];
 
-export default Profile;
+export default ProfileSetup;
 
 // useEffect(() => {
 //   const delay = 2000;

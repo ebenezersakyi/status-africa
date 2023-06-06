@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import Auth from "./components/auth/Auth";
-import BusinessPage from "./components/businessPage/BusinessPage";
+import ProfileSetup from "./components/businessPage/ProfileSetup";
 
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 
@@ -18,7 +18,7 @@ function App() {
             <Route path="/auth" element={<Auth />} />
 
             <Route element={<PrivateRoute />}>
-              <Route path="/business" element={<BusinessPage />} />
+              <Route path="/businessdetails" element={<ProfileSetup />} />
             </Route>
           </Routes>
         </AuthProvider>
