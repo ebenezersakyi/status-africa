@@ -1,0 +1,265 @@
+.main__buss__contb{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    /* width: 100vw; */
+    overflow-y: scroll;
+    background-color: #202124;
+    padding: 20px;
+    position: relative;
+}
+
+.first__section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.business__img{
+    width: 150px;
+    height: 150px;
+    border-radius: 999px;
+    background-color: #737477;
+}
+
+.buss__name{
+    color: white;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 9px 0px 0px 0px;
+}
+
+.buss__loc{
+    color: rgb(215, 214, 214);
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 5px 0px 0px 0px;
+}
+
+.buss__desc{
+    color: rgb(181, 179, 179);
+    font-size:small;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 5px 0px 0px 0px;
+}
+
+.queue__info__section{
+    display: flex;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.update__queueinfo__btn{
+    padding: 15px;
+    color: white;
+    background-color: #333;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.update__queueinfo__btn:hover {
+    background-color: #555;
+  }
+
+.businesspage__dialogue__container{
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0000003e;
+    justify-content: center;
+    align-items: center;
+}
+
+.businesspage__dialogue{
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* width: 400px; */
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    margin-bottom: 20px;
+
+    /* height: 700px; */
+}
+
+
+/* used to be the class for the queue form */
+/* .queue-form {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  } */
+  
+  .queue-label {
+    display: block;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .queue-input {
+    width: calc(100% - 40px);
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #555;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .queue-submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .queue-submit-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .emplpoyee__section__container{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    margin: 20px 0px 20px 0px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .addemployee__btn{
+    width: 200px;
+    height: 200px;
+    padding: 40px;
+    color: white;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 7px;
+    cursor: pointer;
+  }
+
+  .addemployee__btn:hover{
+    background-color: #555;
+
+  }
+
+  .employeecomp__container{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 9px;
+    border: 1px solid rgb(66, 66, 66);
+  }
+
+  .employeecomp__container:hover{
+    background-color: #555; 
+    border: 1px solid rgba(94, 94, 94, 0.173);
+    box-shadow: 2px 2px 5px black;
+  }
+
+  .employee__img{
+    width: 100px;
+    height: 100px;
+    border-radius: 999px;
+    background-color: #555; 
+    margin-bottom: 10px;
+  }
+
+  .employee__name{
+    margin: 0px;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+  }
+
+  .employee__role{
+    margin: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(176, 176, 176);
+  }
+
+  .delete__employee{
+    width: 100%;
+    padding: 15px;
+    margin: 10px;
+    color: white;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(126, 25, 25);
+    border-radius: 9px;
+  }
+
+
+
+  /* add employee dialogue */
+
+  .form-container {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 10px;
+  }
+  
+  /* input[type='text'],
+  textarea {
+    padding: 10px;
+    border: none;
+    background-color: #555;
+    color: #fff;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  } */
+  
+  input[type='file'] {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+
+
+@media screen and (max-width: 800px) {
+    .first__section{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+}

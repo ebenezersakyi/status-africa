@@ -1,10 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Header from "../common/header/Header";
 import Footer from "../common/footer/Footer";
 
+import { Link, useNavigate } from "react-router-dom";
+
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import app from "../../firebase";
+const firestore = getFirestore(app);
+const auth = getAuth(app);
+
 const Home = () => {
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
+  const [searchOutput, setSearchOutput] = useState([]);
+
+  useEffect(() => {
+    let debounceTimer;
+    const debounceSearch = () => {
+      if (inputValue.length > 2) {
+        // setSearchOutput([]);
+        searchBusinesses();
+        // console.log("Searching for:", inputValue);
+      }
+    };
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(debounceSearch, 500);
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [inputValue]);
+
+  const searchBusinesses = async () => {
+    try {
+      const businessRef = collection(firestore, "bussinesses");
+      const q = query(businessRef, where("name", ">=", inputValue));
+
+      const querySnapshot = await getDocs(q);
+      // console.log("Found document:", querySnapshot.docs);
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        // Do something with the document data
+        // console.log("Found document:", data);
+        setSearchOutput([data]);
+      });
+      if (querySnapshot.docs.length < 1) {
+        setSearchOutput([]);
+      }
+    } catch (error) {
+      console.error("Error searching documents:", error);
+    }
+  };
+
   return (
     <div className="home__container">
       <Header />
@@ -37,18 +91,28 @@ const Home = () => {
                 onChange={(e) => setInputValue(e.target.value)}
               />
             </div>
-            {inputValue.length > 0 ? (
+            {inputValue.length > 0 && searchOutput.length > 0 ? (
               <div className="results__container">
-                {trendinBusinesss.map((item, index) => (
-                  <div className="business__item__div">
+                {searchOutput.map((item, index) => (
+                  <div
+                    key={index}
+                    className="business__item__div"
+                    onClick={() => {
+                      navigate("/businesspageviewer", {
+                        state: {
+                          _id: item._id,
+                        },
+                      });
+                    }}
+                  >
                     <img
                       className="business__item__img"
-                      src={item.image}
+                      src={item.businessImage}
                       alt="business image"
                     />
                     <div className="details">
                       <span className="buss__name">{item.name}</span>
-                      <span className="buss__loc">{item.loction}</span>
+                      <span className="buss__loc">{item.cityAndCountry}</span>
                     </div>
                   </div>
                 ))}

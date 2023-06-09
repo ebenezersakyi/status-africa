@@ -2,6 +2,15 @@ import React, { useState, useEffect, useMemo } from "react";
 import "./ProfileSetup.css";
 
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
+
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+import app from "../../firebase";
+
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/storage";
 
 const containerStyle = {
   width: "90vw",
@@ -9,20 +18,25 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 6.674581791420629,
+  lng: -1.5732336044311523,
 };
 
+const storage = getStorage(app);
+const auth = getAuth(app);
+
 const ProfileSetup = () => {
+  const history = useNavigate();
   const [showDilogue, setShowDilogue] = useState(false);
   const [nameValue, setNameValue] = useState("");
   const [cityAndCountry, setCityAndCountry] = useState("");
   const [internationalPhone, setInternationalPhone] = useState("");
+  const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [markerCoordinates, setMarkerCoordinates] = useState({
-    lat: -3.745,
-    lng: -38.523,
+    lat: 6.674581791420629,
+    lng: -1.5732336044311523,
   });
 
   const [businessDetails, setBusinessDetails] = useState(null);
@@ -36,13 +50,13 @@ const ProfileSetup = () => {
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    // const reader = new FileReader();
 
-    reader.onload = () => {
-      setSelectedImage(reader.result);
-    };
+    // reader.onload = () => {
+    setSelectedImage(file);
+    // };
 
-    reader.readAsDataURL(file);
+    // reader.readAsDataURL(file);
   };
 
   // const inputChange = async (e) => {
@@ -54,10 +68,73 @@ const ProfileSetup = () => {
   //     lng: -38.523, }
   // }, [])
 
+  const submitImage = () => {
+    if (selectedImage) {
+      if (
+        nameValue == "" ||
+        cityAndCountry == "" ||
+        internationalPhone == "" ||
+        description == ""
+      ) {
+        alert("Fill all required fields");
+      } else {
+        const file = selectedImage;
+        const storageRef = ref(
+          storage,
+          `businessimages/${auth.currentUser.uid}/${file.name}`
+        );
+
+        uploadBytes(storageRef, file)
+          .then((snapshot) => {
+            console.log("Image uploaded successfully!");
+            return getDownloadURL(snapshot.ref);
+          })
+          .then((downloadURL) => {
+            console.log("Download URL:", downloadURL);
+            submitToFirestore(downloadURL);
+            // Do something with the download URL, like storing it in state or sending it to a backend API
+          })
+          .catch((error) => {
+            console.error("Error uploading image:", error);
+          });
+      }
+    } else {
+      alert("Please select an image");
+    }
+  };
+
+  const submitToFirestore = (item) => {
+    firebase
+      .firestore()
+      .collection("bussinesses")
+      .doc(firebase.auth().currentUser.uid)
+      .set({
+        email: firebase.auth().currentUser.email,
+        name: nameValue,
+        description: description,
+        cityAndCountry: cityAndCountry,
+        internationalPhone: internationalPhone,
+        businessImage: item,
+        coordinates: markerCoordinates,
+        employees: [],
+        queueInformation: {},
+        websiteUrl: website,
+        _id: `${
+          firebase.auth().currentUser.email
+        }${nameValue}${Math.random().toString(12)}`,
+      })
+      .then(() => {
+        history("/businessprofile");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="profile__container">
       <div className="main__section__buss">
-        <span className="title__buss__pg">Enter the name of your business</span>
+        <span className="title__buss__pg">
+          Enter the name of your business (*)
+        </span>
         <div
           className={
             nameValue.length > 0 ? "search__div__active" : "search__div"
@@ -76,7 +153,7 @@ const ProfileSetup = () => {
           </div>
         </div>
 
-        <span className="title__buss__pg">Enter a city and country</span>
+        <span className="title__buss__pg">Enter a city and country (*)</span>
         <div
           className={
             cityAndCountry.length > 0 ? "search__div__active" : "search__div"
@@ -96,7 +173,7 @@ const ProfileSetup = () => {
         </div>
 
         <span className="title__buss__pg">
-          Enter the international phone number of your business
+          Enter the international phone number of your business (*)
         </span>
         <div
           className={
@@ -119,7 +196,7 @@ const ProfileSetup = () => {
         </div>
 
         <span className="title__buss__pg">
-          Enter a description of your business
+          Enter a description of your business (*)
         </span>
         <div
           className={
@@ -139,9 +216,28 @@ const ProfileSetup = () => {
           </div>
         </div>
 
+        <span className="title__buss__pg">Enter a business website</span>
+        <div
+          className={
+            description.length > 0 ? "search__div__active" : "search__div"
+          }
+        >
+          <div className="input__section">
+            <input
+              className="search__input"
+              placeholder="Enter a website"
+              type="text"
+              value={website}
+              onChange={(e) => {
+                setWebsite(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
         <div className="image-selector">
           <span className="title__buss__pg">
-            Choose your business profile picture
+            Choose your business profile picture (*)
           </span>
           <label htmlFor="image-input" className="image-button">
             Choose Image
@@ -153,13 +249,17 @@ const ProfileSetup = () => {
             onChange={handleImageChange}
           />
           {selectedImage && (
-            <img src={selectedImage} alt="Selected" className="thumbnail" />
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              alt="Selected"
+              className="thumbnail"
+            />
           )}
         </div>
 
         <>
           <span className="title__buss__pg">
-            Drag the marker to the location of your business
+            Drag the marker to the location of your business (*)
           </span>
           {isLoaded ? (
             <GoogleMap
@@ -168,6 +268,9 @@ const ProfileSetup = () => {
               zoom={10}
               // onLoad={onLoad}
               // onUnmount={onUnmount}
+              onClick={(item) =>
+                console.log(item.latLng.lat(), item.latLng.lng())
+              }
             >
               {/* Child components, such as markers, info windows, etc. */}
               <Marker
@@ -186,10 +289,7 @@ const ProfileSetup = () => {
           )}
         </>
       </div>
-      <button
-        className="submit-button"
-        // onClick={handleSubmit}
-      >
+      <button className="submit-button" onClick={submitImage}>
         Submit
       </button>
 

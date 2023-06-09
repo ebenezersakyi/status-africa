@@ -7,6 +7,8 @@ import ProfileSetup from "./components/businessPage/ProfileSetup";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 
 import { AuthProvider } from "./contexts/AuthContext";
+import MainBusinessPage from "./components/businessPage/MainBusinessPage";
+import BusinessPageViewer from "./components/businessPageViewer/BusinessPageViewer";
 
 function App() {
   return (
@@ -16,9 +18,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
+            <Route
+              path="/businesspageviewer"
+              element={<BusinessPageViewer />}
+            />
 
             <Route element={<PrivateRoute />}>
-              <Route path="/businessdetails" element={<ProfileSetup />} />
+              <Route path="/businessprofile" element={<MainBusinessPage />} />
+              <Route path="/businessprofilesetup" element={<ProfileSetup />} />
             </Route>
           </Routes>
         </AuthProvider>
