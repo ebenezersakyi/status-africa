@@ -4,7 +4,7 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <div className="footer__container">
-      <a className="footer__link" href="">
+      {/* <a className="footer__link" href="">
         About
       </a>
       <a className="footer__link" href="">
@@ -15,7 +15,9 @@ const Footer = () => {
       </a>
       <a className="footer__link" href="">
         Terms
-      </a>
+      </a> */}
+      <span className="first__span">Made with ❤️ by Ebenezer Sakyi</span>
+      <span className="second__span">Supervised by Dr. Vivian Osei</span>
     </div>
   );
 };

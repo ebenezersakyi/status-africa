@@ -23,6 +23,7 @@ import firebase from "firebase/compat/app";
 // import firebase from 'fir'
 
 import app from "../../firebase";
+import { Rating } from "@mui/material";
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
@@ -46,10 +47,35 @@ const MainBusinessPage = () => {
     setQueueData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setShowQueueDualogue(false);
+  //   // onQueueSubmit(queueData);
+  //   console.log("queueData", queueData);
+  // };
+  const updateQueueInformation = (e) => {
     e.preventDefault();
-    setShowQueueDualogue(false);
-    // onQueueSubmit(queueData);
+    const docRef = firebase
+      .firestore()
+      .collection("bussinesses")
+      .doc(firebase.auth().currentUser.uid);
+
+    docRef
+      .update({
+        queueInformation: {
+          queueLength: queueData.queueLength,
+          waitTime: queueData.waitTime,
+          serviceCapacity: queueData.capacity,
+        },
+      })
+      .then(() => {
+        console.log("Queue information updated successfully!");
+        alert("Success");
+        setShowQueueDualogue(false);
+      })
+      .catch((error) => {
+        console.error("Error updating queue information:", error);
+      });
   };
 
   const handleImageChange = (event) => {
@@ -123,6 +149,7 @@ const MainBusinessPage = () => {
       employeeJobDescription: employeeJobDescription,
       employeeImage: item,
       id: `${Math.random().toString(36)}${employeeName}`,
+      rating: [],
     };
     try {
       const docRef = doc(firestore, "bussinesses", auth.currentUser.uid);
@@ -167,7 +194,10 @@ const MainBusinessPage = () => {
 
   const AddEmployeeDialogie = useMemo(() => {
     return (
-      <div className="businesspage__dialogue__container">
+      <div
+        className="businesspage__dialogue__container"
+        onClick={() => setShowAddEmployeeDualogue(false)}
+      >
         {/* <div className="businesspage__dialogue"> */}
         <form
           className="businesspage__dialogue"
@@ -219,6 +249,12 @@ const MainBusinessPage = () => {
           <button className="queue-submit-btn" type="submit">
             Submit
           </button>
+          <button
+            style={{ marginTop: 10, background: "transparent" }}
+            onClick={() => setShowAddEmployeeDualogue(false)}
+          >
+            Close
+          </button>
         </form>
         {/* </div> */}
       </div>
@@ -227,9 +263,15 @@ const MainBusinessPage = () => {
 
   const QueueDialogue = useMemo(() => {
     return (
-      <div className="businesspage__dialogue__container">
+      <div
+        className="businesspage__dialogue__container"
+        // onClick={() => setShowQueueDualogue(false)}
+      >
         {/* <div className="businesspage__dialogue"> */}
-        <form className="businesspage__dialogue" onSubmit={handleSubmit}>
+        <form
+          className="businesspage__dialogue"
+          onSubmit={updateQueueInformation}
+        >
           <label className="queue-label">
             Queue Length:
             <input
@@ -266,6 +308,12 @@ const MainBusinessPage = () => {
           <button className="queue-submit-btn" type="submit">
             Submit
           </button>
+          <button
+            style={{ marginTop: 10, background: "transparent" }}
+            onClick={() => setShowQueueDualogue(false)}
+          >
+            Close
+          </button>
         </form>
         {/* </div> */}
       </div>
@@ -301,10 +349,14 @@ const MainBusinessPage = () => {
           >
             Add employee
           </button>
-          {businessData.employees.map((item, index) => (
-            <EmployeeComponenet item={item} key={index} />
-          ))}
+          <div className="employee__list__wrapper">
+            {businessData.employees.map((item, index) => (
+              <EmployeeComponenet item={item} key={index} />
+            ))}
+          </div>
         </div>
+
+        <div className="queue___section__conotainer"></div>
 
         {showQueueDialogue && <>{QueueDialogue}</>}
         {showAddEmployeeDialogue && <>{AddEmployeeDialogie}</>}
@@ -320,11 +372,28 @@ const MainBusinessPage = () => {
   );
 
   function EmployeeComponenet({ item, key }) {
+    const calculateMeanRating = (ratings) => {
+      if (ratings.length === 0) {
+        return 0; // Return 0 if there are no ratings
+      }
+
+      const sum = ratings.reduce(
+        (accumulator, rating) => accumulator + rating.rating,
+        0
+      );
+      const mean = sum / ratings.length;
+
+      return mean;
+    };
+
+    const meanRating = calculateMeanRating(item.rating);
+
     return (
       <div key={item.id} className="employeecomp__container">
         <img src={item.employeeImage} alt="" className="employee__img" />
         <span className="employee__name">{item.employeeName}</span>
         <span className="employee__role">{item.employeeJobDescription}</span>
+        <Rating name="read-only" value={meanRating} readOnly />
         <button
           className="delete__employee"
           onClick={() => deleteImageByUrl(item)}

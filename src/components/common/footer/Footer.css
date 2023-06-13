@@ -1,5 +1,6 @@
 .footer__container{
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     flex: 1;
     position: absolute;
@@ -19,4 +20,18 @@
 
 .footer__link:hover{
     text-decoration: underline;
+}
+
+.first__span{
+    color: whitesmoke;
+    letter-spacing: 1px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 10px;
+}
+
+.second__span{
+    color: rgb(179, 178, 178);
+    letter-spacing: 1px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 10px;
 }
