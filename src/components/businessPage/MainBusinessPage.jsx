@@ -163,6 +163,9 @@ const MainBusinessPage = () => {
       fetchBusinessData();
       setShowAddEmployeeDualogue(false);
       console.log("Employee added successfully!");
+      setEmployeeName("");
+      setEmployeeJobDescription("");
+      setSelectedImage(null);
     } catch (error) {
       console.error("Error adding employee:", error);
     }
