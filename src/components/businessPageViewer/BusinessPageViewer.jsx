@@ -26,6 +26,9 @@ import {
 import { getAuth } from "firebase/auth";
 import app from "../../firebase";
 import { BeatLoader } from "react-spinners";
+
+import data from "../../tipsdata";
+
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 
@@ -37,6 +40,7 @@ const containerStyle = {
 const BusinessPageViewer = () => {
   const Location = useLocation();
   const [businessData, setBusinessData] = useState(null);
+  const [showTip, setShowTip] = useState(false);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -69,7 +73,7 @@ const BusinessPageViewer = () => {
     return (
       <div className="main__buss__contb">
         <div className="gpt__icon">
-          <span onClick={() => alert("Coming soon")}>SOS</span>
+          <span onClick={() => setShowTip(!showTip)}>TIPS</span>
         </div>
         <div className="first__section">
           <img
@@ -132,12 +136,25 @@ const BusinessPageViewer = () => {
           >
             Add employee
           </button> */}
-
-          <div className="employee__list__wrapper">
-            {businessData?.employees.map((item, index) => (
-              <EmployeeComponenet item={item} key={index} />
-            ))}
-          </div>
+          {businessData?.employees.length > 0 && (
+            <div className="employee__list__wrapper">
+              {businessData?.employees.map((item, index) => (
+                <EmployeeComponenet item={item} key={index} />
+              ))}
+            </div>
+          )}
+          {businessData?.employees.length > 0 && showTip ? (
+            <div className="tips__background">
+              <div className="close" onClick={() => setShowTip(!showTip)}>
+                Close
+              </div>
+              <div className="tips__wrapper">
+                {businessData?.employees.map((item, index) => (
+                  <BusinessTips item={item} key={index} />
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="queue__section__container">
@@ -336,6 +353,45 @@ const BusinessPageViewer = () => {
         ) : (
           <span className="employee__role">Rate me!</span>
         )}
+      </div>
+    );
+  }
+
+  function BusinessTips({ item }) {
+    const calculateMeanRating = (ratings) => {
+      if (ratings.length === 0) {
+        return 0; // Return 0 if there are no ratings
+      }
+      const sum = ratings.reduce(
+        (accumulator, rating) => accumulator + rating.rating,
+        0
+      );
+      const mean = sum / ratings.length;
+      return mean;
+    };
+
+    const meanRating = calculateMeanRating(item.rating);
+
+    // useEffect(() => {
+    //   meanRating
+    // }, [])
+
+    // if(meanRating)
+    const pickTwoRandomElements = (arr) => {
+      const shuffledArray = data[meanRating].sort(() => Math.random() - 0.5);
+
+      const randomElements = shuffledArray.slice(0, 2);
+
+      return randomElements;
+    };
+    return (
+      <div className="tips__div">
+        <span className="tips__header">
+          Tips when communicating with <b>{item.employeeName}</b>
+        </span>
+        {pickTwoRandomElements().map((item) => (
+          <span className="tips__elements">* {item}</span>
+        ))}
       </div>
     );
   }
