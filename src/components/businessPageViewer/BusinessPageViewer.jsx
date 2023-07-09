@@ -264,6 +264,7 @@ const BusinessPageViewer = () => {
 
           await updateDoc(docRef, { employees: updatedEmployees });
           searchBusinesses();
+          alert("Success");
           console.log("Rating added to employee successfully!");
         }
       } catch (error) {
@@ -295,6 +296,7 @@ const BusinessPageViewer = () => {
 
           await updateDoc(docRef, { employees: updatedEmployees });
           searchBusinesses();
+          alert("Success");
           console.log("Rating updated successfully!");
         }
       } catch (error) {

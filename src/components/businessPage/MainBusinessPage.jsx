@@ -24,6 +24,7 @@ import firebase from "firebase/compat/app";
 
 import app from "../../firebase";
 import { Rating } from "@mui/material";
+import { BeatLoader } from "react-spinners";
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
@@ -198,7 +199,7 @@ const MainBusinessPage = () => {
     return (
       <div
         className="businesspage__dialogue__container"
-        onClick={() => setShowAddEmployeeDualogue(false)}
+        // onClick={() => setShowAddEmployeeDualogue(false)}
       >
         {/* <div className="businesspage__dialogue"> */}
         <form
@@ -368,8 +369,8 @@ const MainBusinessPage = () => {
   }
 
   return (
-    <div className="main__buss__contb">
-      <span>Loading...</span>
+    <div className="loading__div">
+      <BeatLoader size={20} color="white" />
     </div>
   );
 
