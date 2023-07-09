@@ -210,13 +210,13 @@ const BusinessPageViewer = () => {
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
     useEffect(() => {
-      if (ratingItem.email) {
-        const hasRated = item?.rating?.some((ratingItem) => {
+      const hasRated = item?.rating?.some((ratingItem) => {
+        if (ratingItem.email) {
           return ratingItem?.email === firebase.auth().currentUser.email;
-        });
+        }
+      });
 
-        setHasRated(hasRated);
-      }
+      setHasRated(hasRated);
 
       if (firebase.auth().currentUser.email) {
         setHasLoggedIn(true);
