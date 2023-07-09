@@ -1,7 +1,7 @@
 .home__container{
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 90vh;
     /* width: 100vw; */
     background-color: #202124;
     position: relative;
@@ -87,6 +87,16 @@
     color: #9aa0a6;
 }
 
+.loading__indicator{
+    display: flex;
+    align-self:flex-end;
+    justify-self: flex-end;
+    justify-content: center;
+    align-items: center;
+    height: 55px;
+    width: 50px;
+}
+
 .searchicon__div > svg{
     display: block;
     /* color: white !important; */
@@ -99,6 +109,15 @@
 }
 
 .search__input{
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: large;
+}
+
+.search__input__home{
     width: 100%;
     border: none;
     outline: none;
@@ -149,6 +168,7 @@
     width: 40px;
     height: 40px;
     border-radius: 9px;
+    align-self:center;
 }
 
 .details{

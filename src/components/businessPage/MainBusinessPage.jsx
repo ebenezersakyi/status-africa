@@ -55,6 +55,7 @@ const MainBusinessPage = () => {
   // };
   const updateQueueInformation = (e) => {
     e.preventDefault();
+    const currentDate = new Date();
     const docRef = firebase
       .firestore()
       .collection("bussinesses")
@@ -66,10 +67,11 @@ const MainBusinessPage = () => {
           queueLength: queueData.queueLength,
           waitTime: queueData.waitTime,
           serviceCapacity: queueData.capacity,
+          lastUpdated: currentDate.toDateString(),
         },
       })
       .then(() => {
-        console.log("Queue information updated successfully!");
+        // console.log("Queue information updated successfully!");
         alert("Success");
         setShowQueueDualogue(false);
       })
@@ -102,7 +104,7 @@ const MainBusinessPage = () => {
         const data = docSnap.data();
         // Do something with the retrieved data
         setBusinessData(data);
-        console.log("Business data:", data);
+        // console.log("Business data:", data);
       } else {
         console.log("No business data found");
       }

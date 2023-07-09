@@ -25,6 +25,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import app from "../../firebase";
+import { BeatLoader } from "react-spinners";
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 
@@ -43,7 +44,7 @@ const BusinessPageViewer = () => {
   });
 
   useEffect(() => {
-    console.log("props", Location.state);
+    // console.log("props", Location.state);
     searchBusinesses();
   }, [Location.state]);
 
@@ -57,7 +58,7 @@ const BusinessPageViewer = () => {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         setBusinessData(data);
-        console.log("Found document:", data);
+        // console.log("Found document:", data);
       });
     } catch (error) {
       console.error("Error searching documents:", error);
@@ -68,7 +69,7 @@ const BusinessPageViewer = () => {
     return (
       <div className="main__buss__contb">
         <div className="gpt__icon">
-          <span>SOS</span>
+          <span onClick={() => alert("Coming soon")}>SOS</span>
         </div>
         <div className="first__section">
           <img
@@ -98,7 +99,7 @@ const BusinessPageViewer = () => {
             {businessData.websiteUrl.length > 0 && (
               <div
                 onClick={() => {
-                  window.open(businessData.websiteUrl, "_blank");
+                  window.open(`https://${businessData.websiteUrl}`, "_blank");
                 }}
               >
                 <Web
@@ -141,14 +142,16 @@ const BusinessPageViewer = () => {
 
         <div className="queue__section__container">
           <span className="empl__header">Queue Information</span>
-          <span className="lst__udt">Last updated: </span>
+          <span className="lst__udt">
+            Last updated: {businessData.queueInformation?.lastUpdated}{" "}
+          </span>
           <div className="queue__information">
             <span>
               Queue Length: {businessData.queueInformation?.queueLength}
             </span>
             <span>
-              Estimated Wait Time (in minutes):{" "}
-              {businessData.queueInformation?.waitTime}
+              Estimated Wait Time: {businessData.queueInformation?.waitTime}{" "}
+              minutes
             </span>
             <span>
               Service Capacity: {businessData.queueInformation?.serviceCapacity}
@@ -191,20 +194,24 @@ const BusinessPageViewer = () => {
           )}
         </div>
 
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }
 
-  return <span>Loading</span>;
+  return (
+    <div className="loading__div">
+      <BeatLoader size={20} color="white" />
+    </div>
+  );
 
   function EmployeeComponenet({ item, key }) {
     const [hasRated, setHasRated] = useState(false);
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
     useEffect(() => {
-      const hasRated = item.rating?.some((ratingItem) => {
-        return ratingItem.email === firebase.auth().currentUser.email;
+      const hasRated = item?.rating?.some((ratingItem) => {
+        return ratingItem?.email === firebase.auth().currentUser.email;
       });
 
       setHasRated(hasRated);
@@ -316,6 +323,7 @@ const BusinessPageViewer = () => {
             }
           }}
         />
+        <span className="employee__role">{meanRating} stars</span>
         {hasRated ? (
           <span className="employee__role">Rated!</span>
         ) : (

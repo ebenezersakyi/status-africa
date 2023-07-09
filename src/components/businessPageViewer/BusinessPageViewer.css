@@ -5,6 +5,19 @@
     letter-spacing: 1px;
 }
 
+.loading__div{
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* width: 100vw; */
+    /* overflow-y: scroll; */
+    background-color: #202124;
+    /* padding: 20px; */
+    /* position: relative; */
+}
+
 .quick__actions{
     display: flex;
     margin: 10px;
@@ -47,5 +60,5 @@
 .map__section{
     display: flex;
     flex-direction: column;
-    margin: 35px 0px 0px 0px ;
+    margin: 35px 0px 35px 0px ;
 }

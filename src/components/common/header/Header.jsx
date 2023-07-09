@@ -66,7 +66,7 @@ const Header = () => {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         setBusinessDataH(data);
-        console.log("Found document:", data);
+        // console.log("Found document:", data);
       });
 
       if (querySnapshot) {

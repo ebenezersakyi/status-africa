@@ -90,7 +90,7 @@ const ProfileSetup = () => {
             return getDownloadURL(snapshot.ref);
           })
           .then((downloadURL) => {
-            console.log("Download URL:", downloadURL);
+            // console.log("Download URL:", downloadURL);
             submitToFirestore(downloadURL);
             // Do something with the download URL, like storing it in state or sending it to a backend API
           })
