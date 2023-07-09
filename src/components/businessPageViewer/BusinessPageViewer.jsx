@@ -211,7 +211,7 @@ const BusinessPageViewer = () => {
 
     useEffect(() => {
       const hasRated = item?.rating?.some((ratingItem) => {
-        if (ratingItem.email) {
+        if (ratingItem.email !== null) {
           return ratingItem?.email === firebase.auth().currentUser.email;
         }
       });
