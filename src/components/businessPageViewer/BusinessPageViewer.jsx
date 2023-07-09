@@ -210,19 +210,21 @@ const BusinessPageViewer = () => {
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
     useEffect(() => {
-      const hasRated = item?.rating?.some((ratingItem) => {
-        if (
-          ratingItem?.email !== null &&
-          firebase.auth().currentUser?.email !== null
-        ) {
-          return ratingItem.email === firebase.auth().currentUser.email;
+      const user = firebase.auth().currentUser;
+      if (user) {
+        const hasRated = item?.rating?.some((ratingItem) => {
+          if (
+            ratingItem?.email !== null &&
+            firebase.auth().currentUser?.email !== null
+          ) {
+            return ratingItem.email === firebase.auth().currentUser.email;
+          }
+        });
+
+        setHasRated(hasRated);
+        if (firebase.auth().currentUser.email) {
+          setHasLoggedIn(true);
         }
-      });
-
-      setHasRated(hasRated);
-
-      if (firebase.auth().currentUser.email) {
-        setHasLoggedIn(true);
       }
     }, [item]);
 
