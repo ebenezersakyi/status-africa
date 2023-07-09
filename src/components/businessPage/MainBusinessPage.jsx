@@ -388,13 +388,13 @@ const MainBusinessPage = () => {
       return mean;
     };
 
-    const meanRating = calculateMeanRating(item.rating);
+    const meanRating = calculateMeanRating(item?.rating);
 
     return (
-      <div key={item.id} className="employeecomp__container">
-        <img src={item.employeeImage} alt="" className="employee__img" />
-        <span className="employee__name">{item.employeeName}</span>
-        <span className="employee__role">{item.employeeJobDescription}</span>
+      <div key={item?.id} className="employeecomp__container">
+        <img src={item?.employeeImage} alt="" className="employee__img" />
+        <span className="employee__name">{item?.employeeName}</span>
+        <span className="employee__role">{item?.employeeJobDescription}</span>
         <Rating name="read-only" value={meanRating} readOnly />
         <button
           className="delete__employee"
