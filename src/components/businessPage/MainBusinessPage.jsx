@@ -162,6 +162,7 @@ const MainBusinessPage = () => {
 
       fetchBusinessData();
       setShowAddEmployeeDualogue(false);
+      alert("Success");
       console.log("Employee added successfully!");
       setEmployeeName("");
       setEmployeeJobDescription("");
