@@ -280,7 +280,7 @@ const MainBusinessPage = () => {
           onSubmit={updateQueueInformation}
         >
           <label className="queue-label">
-            Queue Length:
+            Average queue Length:
             <input
               className="queue-input"
               type="number"

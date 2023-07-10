@@ -164,7 +164,7 @@ const BusinessPageViewer = () => {
           </span>
           <div className="queue__information">
             <span>
-              Queue Length: {businessData.queueInformation?.queueLength}
+              Average queue Length: {businessData.queueInformation?.queueLength}
             </span>
             <span>
               Estimated Wait Time: {businessData.queueInformation?.waitTime}{" "}
